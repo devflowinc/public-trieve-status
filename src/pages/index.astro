@@ -1,0 +1,16 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { Services } from '../components/Services.tsx';
+import { services, auth, url } from '../services.json';
+---
+
+<Layout title="Trieve Status">
+	<div class="my-20">
+		<div class="flex justify-between items-baseline w-full">
+			<div class="flex items-end mb-6 space-x-3">
+				<h1 class="text-2xl font-medium">Trieve Status</h1>
+			</div>
+		</div>
+		<Services services={services} client:only />
+	</div>
+</Layout>

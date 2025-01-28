@@ -1,0 +1,25 @@
+version: "3"
+
+services:
+  status:
+    image: trieve/status-page
+    build: .
+    restart: always
+    ports:
+      - 3000:3000
+    network_mode: "host"
+  cloud-sql-proxy:
+    image: gcr.io/cloud-sql-connectors/cloud-sql-proxy:2.11.3
+    restart: always
+    ports:
+      - 5432:5432
+    command: [
+      "--structured-logs",
+      "--auto-iam-authn",
+      "--port=5432",
+      "studious-lore-405302:us-west1:trieve-cloud"
+    ]
+
+networks:
+  app-network:
+    driver: bridge
