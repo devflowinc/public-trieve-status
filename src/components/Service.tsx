@@ -1,4 +1,4 @@
-import { For, Show, createEffect, createMemo, createSignal } from "solid-js";
+import { For, Show } from "solid-js";
 import { SLOS } from '../services.json';
 import type { HealthCheckResponse, ServerSpec } from "./Services";
 import { FiChevronDown, FiChevronUp, FiRefreshCw } from "solid-icons/fi";
@@ -12,10 +12,6 @@ interface ServiceProps {
 }
 
 export const Service = (props: ServiceProps) => {
-    let totalCards = createMemo(() => {
-        return props.healthChecks.cardCounts != null ? Object.values(props.healthChecks.cardCounts).reduce((a, b) => a + b, 0) : 0
-    });
-
     return (
         <div>
             <div class="flex justify-between px-4 py-3 items-center text-alabaster bg-[rgb(28,25,31)] rounded-lg">

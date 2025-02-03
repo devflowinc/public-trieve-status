@@ -1,8 +1,6 @@
 import { createSignal, For, createEffect } from "solid-js";
-import { Queue } from "./Queue";
 import { Service } from "./Service";
 import { Ingestions } from "./Ingestions";
-import { refresh } from "../services.json"
 
 export interface ServerSpec {
     name: string,
@@ -26,7 +24,6 @@ export interface HealthCheckResponse {
 
 export const Services = (props: { services: ServerSpec[] }) => {
     const dropdowns = props.services.map((_) => createSignal(false));
-    const timer = refresh.services ?? 60000;
     const healthChecks = props.services.map(
         () => createSignal<HealthCheckResponse>({
             healthy: null,

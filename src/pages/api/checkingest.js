@@ -9,13 +9,11 @@ export const POST = async ({ request }) => {
     .connect();
 
     let length = -1;
-    let numberDatasets = null;
     let dataset_info = null;
 
     if (requestJSON.command && requestJSON.command === "fair") {
         dataset_info = []
         const datasets = await client.SMEMBERS(`${requestJSON.queue}_fairness_set`);
-        numberDatasets = datasets.length;
         for (let dataset of datasets) {
             const dataset_length = await client.ZCARD(`${requestJSON.queue}_${dataset}_queue`);
             length += dataset_length;
