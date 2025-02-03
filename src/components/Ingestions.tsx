@@ -1,6 +1,11 @@
 import { For, Show, createEffect, createSignal } from "solid-js";
 import { ingest, refresh } from '../services.json';
 
+export type DatasetInfo = {
+    dataset_length: number;
+    dataset_id: string;
+}
+
 export const Ingestions = () => {
     const queueLengths = ingest.map((_) => createSignal(0))
     const diffs = ingest.map((_) => createSignal(0));
@@ -9,6 +14,8 @@ export const Ingestions = () => {
 
     const numAverages = ingest.map((_) => createSignal(0));
     const totalOfDiffs = ingest.map((_) => createSignal(0));
+
+    const datasetInfo = ingest.map((_) => createSignal<null | DatasetInfo[]>(null));
 
     const [fetching, setFetching] = createSignal(false);
 
@@ -30,12 +37,15 @@ export const Ingestions = () => {
                 if (previous == 0) {
                     totalOfDiffs[i][1](0);
                 } else {
-                    console.log("diff", diff)
                     totalOfDiffs[i][1]((prev) => diff + prev);
                 }
 
                 queueLengths[i][1](data.length);
                 diffs[i][1](diff);
+
+                if (data.dataset_info) {
+                    datasetInfo[i][1](data.dataset_info);
+                }
             })
         });
     }
@@ -54,13 +64,22 @@ export const Ingestions = () => {
             {(q, i) => {
                 return (<div class="px-4 py-3 my-3 bg-[rgb(28,25,31)] items-center text-alabaster rounded-lg">
                     <div class="text-lg flex justify-end">
-                        <div class="flex items-center w-full space-x-2">
-                            <div class="text-sm fotn-medium">
-                                Backlog:
-                            </div>
-                            <div class="text-sm font-normal">{Number(queueLengths[i()][0]()).toLocaleString()} </div>
-                            <div class="text-sm font-light">
-                                Batches
+                        <div class="flex items-center w-full space-x-2 space-y-4">
+                            <div class="flex flex-col items-center w-full">
+                                <Show when={datasetInfo[i()][0]()?.length}>
+                                    <div class="w-full">
+                                        Fair Queue with {datasetInfo[i()][0]()?.length} Dataset(s): 
+                                    </div>
+                                </Show>
+                                <div class="flex w-full space-x-1">
+                                    <div class="text-sm font-medium">
+                                        Backlog: 
+                                    </div>
+                                    <div class="text-sm font-normal">{Number(queueLengths[i()][0]()).toLocaleString()} {" "}</div>
+                                    <div class="text-sm font-light">
+                                        Batches
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div class="text-small font-normal w-full"> {q.name} </div>
