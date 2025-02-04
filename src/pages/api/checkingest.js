@@ -13,9 +13,16 @@ export const POST = async ({ request }) => {
 
     if (requestJSON.command && requestJSON.command === "fair") {
         dataset_info = []
-        const datasets = await client.SMEMBERS(`${requestJSON.queue}_fairness_set`);
-        for (let dataset of datasets) {
-            const dataset_length = await client.ZCARD(`${requestJSON.queue}_${dataset}_queue`);
+        let keys_global = `${requestJSON.queue}_*_queue`;
+        if ("processing" in requestJSON.queue) {
+            keys_global = `${requestJSON.queue}_*_processing`;
+        }
+        if ("dead_letters" in requestJSON.queue) {
+            keys_global = `${requestJSON.queue}_*_failed`;
+        }
+        const dataset_keys = await client.KEYS(keys_global);
+        for (let dataset of dataset_keys) {
+            const dataset_length = await client.ZCARD(dataset);
             length += dataset_length;
             dataset_info.push({
                 dataset_length: dataset_length,
