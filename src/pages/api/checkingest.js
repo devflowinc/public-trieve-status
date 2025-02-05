@@ -14,12 +14,11 @@ export const POST = async ({ request }) => {
     if (requestJSON.command && requestJSON.command === "fair") {
         dataset_info = []
         let keys_global = `${requestJSON.queue}_*_queue`;
+        length = 0;
         if (requestJSON.queue.includes("processing")) {
-            length = 0;
             keys_global = `${requestJSON.queue}_*_processing`;
         }
         if (requestJSON.queue.includes("dead_letters")) {
-            length = 0;
             keys_global = `${requestJSON.queue}_*_failed`;
         }
         const dataset_keys = await client.KEYS(keys_global);
