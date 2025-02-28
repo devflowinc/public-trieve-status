@@ -1,52 +1,53 @@
 {
-        "services": [
-                {
-                    "name": "Jina Search",
-                    "url": "https://api.trieve.ai/api",
-                    "dataset_id": "jina-status",
-                    "organization_id": "6c47636c-c5dd-4299-b6dd-db9ecee5ecd8",
-                    "api_key": "tr-2o5fpQ4tUAbbZoMPBYujYdYyXhRD0epG",
-		    "only_fulltext": false
-                },
-                {
-                    "name": "BGE-m3 Search",
-                    "url": "https://api.trieve.ai/api",
-                    "dataset_id": "m3-status",
-                    "organization_id": "6c47636c-c5dd-4299-b6dd-db9ecee5ecd8",
-                    "api_key": "tr-2o5fpQ4tUAbbZoMPBYujYdYyXhRD0epG",
-		    "only_fulltext": false
-                },
-                {
-                    "name": "OpenAI Search",
-                    "url": "https://api.trieve.ai/api",
-                    "api_key": "tr-2o5fpQ4tUAbbZoMPBYujYdYyXhRD0epG",
-                    "dataset_id": "openai-status",
-                    "organization_id": "6c47636c-c5dd-4299-b6dd-db9ecee5ecd8",
-		    "only_fulltext": false
-                }
-        ],
-        "ingest": [
-                {
-                        "name": "Jina-base-en, Jina-code, and bge-m3 Chunk Insertion Queue",
-                        "uri": "redis://:thisredispasswordisverysecureandcomplex@127.0.0.1:6379",
-                        "queue": "ingestion",
-                        "max": 100
-                },
-                {
-                        "name": "OpenAI Chunk Insertion Queue",
-                        "uri": "redis://:thisredispasswordisverysecureandcomplex@127.0.0.1:6379",
-                        "queue": "processing",
-                        "max": 100
-                }
-        ],
-        "refresh": {
-                "ingest": 1000,
-                "queue": 1000,
-                "services": "30000"
-        },
-	"SLOS": {
-		"Semantic" : 800,
-		"Full Text": 500,
-		"Hybrid": 2000
-        }
+  "services": [
+    {
+      "name": "Jina Search",
+      "url": "https://api.trieve.ai/api",
+      "dataset_id": "jina-status",
+      "organization_id": "6c47636c-c5dd-4299-b6dd-db9ecee5ecd8",
+      "api_key": "tr-2o5fpQ4tUAbbZoMPBYujYdYyXhRD0epG",
+      "only_fulltext": false
+    },
+    {
+      "name": "BGE-m3 Search",
+      "url": "https://api.trieve.ai/api",
+      "dataset_id": "m3-status",
+      "organization_id": "6c47636c-c5dd-4299-b6dd-db9ecee5ecd8",
+      "api_key": "tr-2o5fpQ4tUAbbZoMPBYujYdYyXhRD0epG",
+      "only_fulltext": false
+    },
+    {
+      "name": "OpenAI Search",
+      "url": "https://api.trieve.ai/api",
+      "api_key": "tr-2o5fpQ4tUAbbZoMPBYujYdYyXhRD0epG",
+      "dataset_id": "openai-status",
+      "organization_id": "6c47636c-c5dd-4299-b6dd-db9ecee5ecd8",
+      "only_fulltext": false
+    }
+  ],
+  "ingest": [
+    {
+      "name": "Jina-base-en, Jina-code, and bge-m3 Chunk Insertion Queue",
+      "uri": "redis://:thisredispasswordisverysecureandcomplex@127.0.0.1:6379",
+      "queue": "ingestion",
+      "max": 100
+    },
+    {
+      "name": "OpenAI Chunk Insertion Queue",
+      "uri": "redis://:thisredispasswordisverysecureandcomplex@127.0.0.1:6379",
+      "queue": "processing",
+      "max": 100
+    }
+  ],
+  "refresh": {
+    "ingest": 1000,
+    "queue": 1000,
+    "services": "30000"
+  },
+  "SLOS": {
+    "Semantic": 800,
+    "Full Text": 500,
+    "Hybrid": 2000,
+    "Group Oriented Search": 1000
+  }
 }

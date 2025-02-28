@@ -1,5 +1,6 @@
 import { For, Show, createEffect, createSignal } from "solid-js";
 import { ingest, refresh } from '../services.json';
+import type { IngestResponse } from "../pages/api/checkingest";
 
 export type DatasetInfo = {
     dataset_length: number;
@@ -9,7 +10,6 @@ export type DatasetInfo = {
 export const Ingestions = () => {
     const queueLengths = ingest.map((_) => createSignal(0))
     const diffs = ingest.map((_) => createSignal(0));
-    const rates = ingest.map((_) => createSignal(0));
     const timer = refresh.ingest ?? 1000;
 
     const numAverages = ingest.map((_) => createSignal(0));
@@ -17,7 +17,6 @@ export const Ingestions = () => {
 
     const datasetInfo = ingest.map((_) => createSignal<null | DatasetInfo[]>(null));
 
-    const [fetching, setFetching] = createSignal(false);
 
     const checkIngest = () => {
 
@@ -27,8 +26,7 @@ export const Ingestions = () => {
                 body: JSON.stringify(q)
             }).then((resp) => {
                 return resp.json()
-            }).then((data) => {
-
+            }).then((data: IngestResponse) => {
                 numAverages[i][1]((prev) => prev + 1);
 
                 const previous = queueLengths[i][0]();
