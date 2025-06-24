@@ -7,6 +7,9 @@ services:
     restart: always
     ports:
       - 3003:3000
+    environment:
+      - AUTH_USERNAME=${AUTH_USERNAME}
+      - AUTH_PASSWORD=${AUTH_PASSWORD}
 
 networks:
   app-network:
