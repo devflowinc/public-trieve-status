@@ -10,6 +10,8 @@ services:
     environment:
       - AUTH_USERNAME=${AUTH_USERNAME}
       - AUTH_PASSWORD=${AUTH_PASSWORD}
+    volumes:
+      - ~/.kube:/root/.kube:ro
 
 networks:
   app-network:
