@@ -41,7 +41,8 @@ export const POST = async ({ request }) => {
             });
         }
 
-        const { stdout, stderr } = await execAsync('kubectl rollout restart deployment/server-chunk && kubectl rollout restart deployment/server');
+        const kubeconfigPath = process.env.KUBECONFIG || '/root/.kube/config';
+        const { stdout, stderr } = await execAsync(`kubectl --kubeconfig=${kubeconfigPath} rollout restart deployment/server-chunk && kubectl --kubeconfig=${kubeconfigPath} rollout restart deployment/server`);
         
         if (stderr) {
             console.error('kubectl stderr:', stderr);
