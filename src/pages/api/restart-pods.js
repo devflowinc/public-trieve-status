@@ -41,8 +41,7 @@ export const POST = async ({ request }) => {
             });
         }
 
-        const { stdout, stderr } = await execAsync('kubectl rollout restart deployment/server-chunk');
-        const { stdout, stderr } = await execAsync('kubectl rollout restart deployment/server');
+        const { stdout, stderr } = await execAsync('kubectl rollout restart deployment/server-chunk && kubectl rollout restart deployment/server');
         
         if (stderr) {
             console.error('kubectl stderr:', stderr);
