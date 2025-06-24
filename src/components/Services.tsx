@@ -1,6 +1,8 @@
 import { createSignal, For, createEffect } from "solid-js";
 import { Service } from "./Service";
 import { Ingestions } from "./Ingestions";
+import { HealthGraphs } from "./HealthGraphs";
+import type { HealthCheckResponse } from "../pages/api/checkhealth";
 
 export interface ServerSpec {
     name: string,
@@ -12,25 +14,11 @@ export interface ServicesProps {
     services: ServerSpec[],
 }
 
-export interface HealthCheckResponse {
-    healthy: boolean | null,
-    status: [string: string] | null,
-    responses: [string: string] | null,
-    cardCounts?: [string: number] | null,
-    checksPassed: number,
-    times?: [string: number] | null,
-    timings: [string | null] | null,
-}
-
 export const Services = (props: { services: ServerSpec[] }) => {
     const dropdowns = props.services.map((_) => createSignal(false));
     const healthChecks = props.services.map(
-        () => createSignal<HealthCheckResponse>({
-            healthy: null,
-            status: null,
-            checksPassed: 0,
-            responses: null,
-            timings: null
+        (service) => createSignal<HealthCheckResponse>({
+            [service.name]: { healthy: false, status: "Not checked yet" },
         })
     );
 
@@ -65,9 +53,7 @@ export const Services = (props: { services: ServerSpec[] }) => {
                 body: JSON.stringify(service)
             }).then((resp) => {
                 return resp.json()
-            }).then((data) => {
-                //@ts-ignore
-                console.log(data)
+            }).then((data: HealthCheckResponse) => {
                 healthChecks[i][1](data);
             })
         })
@@ -75,11 +61,7 @@ export const Services = (props: { services: ServerSpec[] }) => {
 
     const checkOneHealth = async (i: number) => {
         healthChecks[i][1]({
-            healthy: null,
-            status: null,
-            checksPassed: 0,
-            responses: null,
-            timings: null
+            fulltext: { healthy: false, status: "Checking..." }
         });
         fetch("/api/checkhealth", {
             method: "POST",
@@ -89,9 +71,8 @@ export const Services = (props: { services: ServerSpec[] }) => {
             body: JSON.stringify(props.services[i])
         }).then((resp) => {
             return resp.json()
-        }).then((data) => {
+        }).then((data: HealthCheckResponse) => {
             console.log(data);
-            //@ts-ignore
             healthChecks[i][1](data);
         })
     }
@@ -123,6 +104,8 @@ export const Services = (props: { services: ServerSpec[] }) => {
                 <p class="text-2xl">Ingestion Queues</p>
                 <Ingestions />
             </div>
+            
+            <HealthGraphs />
         </div>
     )
 }

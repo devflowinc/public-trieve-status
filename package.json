@@ -16,14 +16,22 @@
     "@astrojs/tailwind": "^5.0.2",
     "@sendgrid/mail": "^7.7.0",
     "astro": "^3.6.4",
+    "chart.js": "^4.4.8",
+    "chartjs-adapter-date-fns": "^3.0.0",
+    "date-fns": "^4.1.0",
     "handlebars": "^4.7.8",
     "nodemailer": "^6.9.13",
     "pg": "^8.11.4",
     "redis": "^4.6.13",
     "solid-icons": "^1.1.0",
     "solid-js": "^1.8.6",
+    "sqlite3": "^5.1.7",
     "tailwindcss": "^3.3.5",
     "twilio": "^5.3.7",
     "typescript": "^5.3.2"
+  },
+  "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e",
+  "devDependencies": {
+    "@types/sqlite3": "^5.1.0"
   }
 }
